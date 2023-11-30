@@ -3,6 +3,8 @@
 #include <SFML/System.hpp>
 #include "Juego.h"
 #include <iostream> 
+#include "Enemigo.h"
+
 
 using namespace sf;
 using namespace std;
@@ -29,9 +31,20 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 
 	//Inicializar el jugador
 	jugador = new Jugador();
+	enemigos[0] = new Enemigos();
+	enemigos[1] = new Enemigos();
+	enemigos[2] = new Enemigos();
+	enemigos[3] = new Enemigos();
+	enemigos[4] = new Enemigos();
 
 	//para que siempre inicie el menú
 	start = false;
+
+	enemigos[0]->getSpriteArriba()->setPosition(75.f, 84.f);
+	enemigos[1]->getSpriteArriba()->setPosition(525.f, 84.f);
+	enemigos[2]->getSpriteAbajo()->setPosition(50.f, 334.f);
+	enemigos[3]->getSpritePuerta()->setPosition(337.f, 328.f);
+	enemigos[4]->getSpriteAbajo()->setPosition(550.f, 334.f);
 
 }
 
@@ -115,7 +128,11 @@ void Juego::dibujar() {
 	ventana1->clear();
 
 	ventana1->draw(*fondo);
-	
+	ventana1->draw(*enemigos[0]->getSpriteArriba());
+	ventana1->draw(*enemigos[1]->getSpriteArriba());
+	ventana1->draw(*enemigos[2]->getSpriteAbajo());
+	ventana1->draw(*enemigos[3]->getSpritePuerta());
+	ventana1->draw(*enemigos[4]->getSpriteAbajo());
 
 	jugador->Dibujar(ventana1);
 

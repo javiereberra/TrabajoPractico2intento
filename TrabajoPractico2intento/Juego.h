@@ -3,6 +3,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include "Jugador.h"
+#include "Enemigo.h"
 
 using namespace sf;
 
@@ -27,7 +28,8 @@ private:
 	//variable jugador
 	Jugador* jugador;
 
-	
+	Enemigos* enemigos[5];
+
 
 public:
 	//constructor de juego
