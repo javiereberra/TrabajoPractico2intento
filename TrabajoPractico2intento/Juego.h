@@ -25,6 +25,15 @@ private:
 	//un booleano para determinar cuándo se está jugando y cuándo está en el menu
 	bool start;
 
+	//el reloj para el spawn
+	Clock _clock;
+	float tiempoApagado;
+	float tiempoVisible;
+
+	bool _visibles;
+	int pos1;
+	int pos2;
+
 	//variable jugador
 	Jugador* jugador;
 
@@ -44,6 +53,10 @@ public:
 	void procesar_eventos();
 	// método para gestionar el disparo del mouse
 	void disparar();
+	
+	//metodo para la aparición de enemigos e inocente
+	void spawn();
+	
 	//método de gameover para cuando se acaben las vidas
 	void gameOver();
 

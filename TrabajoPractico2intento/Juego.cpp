@@ -46,6 +46,11 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	enemigos[3]->getSpritePuerta()->setPosition(337.f, 328.f);
 	enemigos[4]->getSpriteAbajo()->setPosition(550.f, 334.f);
 
+	tiempoApagado = 0.5f;
+	tiempoVisible = 1.5f;
+
+	_visibles = false;
+
 }
 
 //Método que gestiona si se está en el menú o jugando.
@@ -106,10 +111,45 @@ void Juego::procesar_eventos() {
 	}
 }
 
+void Juego::spawn() {
+
+
+	//agregar condición de bool VISIBLES (si no están visibles)//
+	if (!_visibles) {
+		//si el tiempo transcurrido es mayor al tiempo apagado (0,5)//
+		if (_clock.getElapsedTime().asSeconds() > tiempoApagado) {
+			//reiniciar reloj//
+			_clock.restart();
+			//VISIBLES es true//
+			_visibles = true;
+			pos1 = rand() % 5;
+		}
+		//posicion1 = a un rand 1 a 5, 6 o 7 para enemigo//
+		//posicion2 = un rand de 1 a 5 o 6 para inocente que no sea igual al primer rand//
+
+	}
+	else {
+		{
+			if (_clock.getElapsedTime().asSeconds() > tiempoVisible) {
+				_visibles = false;
+				_clock.restart();
+			}
+		}
+
+
+
+		//LUEGO en DIBUJAR agregar un switch con condicion
+		//si están VISIBLES  - SWITCH (POS) dibujar enemigos[x]
+
+
+	}
+}
+
 void Juego::actualizar() {
 
 	Vector2i mousePos = Mouse::getPosition(*ventana1);
 	jugador->Movimiento(mousePos.x, mousePos.y);
+	spawn();
 
 	
 
@@ -128,11 +168,31 @@ void Juego::dibujar() {
 	ventana1->clear();
 
 	ventana1->draw(*fondo);
-	ventana1->draw(*enemigos[0]->getSpriteArriba());
-	ventana1->draw(*enemigos[1]->getSpriteArriba());
-	ventana1->draw(*enemigos[2]->getSpriteAbajo());
-	ventana1->draw(*enemigos[3]->getSpritePuerta());
-	ventana1->draw(*enemigos[4]->getSpriteAbajo());
+
+	if (_visibles) {
+		switch (pos1) {
+		case 0:
+			ventana1->draw(*enemigos[0]->getSpriteArriba());
+			break;
+		case 1:
+			ventana1->draw(*enemigos[1]->getSpriteArriba());
+			break;
+		case 2:
+			ventana1->draw(*enemigos[2]->getSpriteAbajo());
+			break;
+		case 3:
+			ventana1->draw(*enemigos[3]->getSpritePuerta());
+			break;
+		case 4:
+			ventana1->draw(*enemigos[4]->getSpriteAbajo());
+			break;
+		default:
+			break;
+		}
+	}
+	
+	
+	
 
 	jugador->Dibujar(ventana1);
 
@@ -143,7 +203,7 @@ void Juego::dibujar() {
 
 Juego::~Juego() {
 
-
+	delete enemigos;
 	delete jugador;
 	delete ventana1;
 
