@@ -40,17 +40,21 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	//para que siempre inicie el menú
 	start = false;
 
+	//establecer las posiciones de los sprites para que coincidan con el fondo
 	enemigos[0]->getSpriteArriba()->setPosition(75.f, 84.f);
 	enemigos[1]->getSpriteArriba()->setPosition(525.f, 84.f);
 	enemigos[2]->getSpriteAbajo()->setPosition(50.f, 334.f);
 	enemigos[3]->getSpritePuerta()->setPosition(337.f, 328.f);
 	enemigos[4]->getSpriteAbajo()->setPosition(550.f, 334.f);
 
+	//tiempos para gestionar las apariciones de enemigos e inocentes en pantalla
 	tiempoApagado = 1.2f;
 	tiempoVisible = 2.0f;
 
+	//establecer que comience el juego sin enemigos
 	_visibles = false;
 
+	//establecer vidas y puntaje
 	vidas = 20;
 	ptos = 0;
 
@@ -89,7 +93,7 @@ void Juego::ejecutar() {
 		ventana1->display();
 	}
 }
-
+// loop que procesa eventos actualiza y dibuja
 void Juego::gameLoop() {
 
 	while (ventana1->isOpen()) {
@@ -102,6 +106,7 @@ void Juego::gameLoop() {
 	}
 }
 
+//Eventos para poder cerrar ventana y procesar el disparo del jugador
 void Juego::procesar_eventos() {
 	Event evento1;
 	while (ventana1->pollEvent(evento1)) {
@@ -117,26 +122,31 @@ void Juego::procesar_eventos() {
 	}
 }
 
+//Método para gestionar las apariciones en pantalla de enemigos y civiles
 void Juego::spawn() {
 
-
-	//agregar condición de bool VISIBLES (si no están visibles)//
+	//cuando no hay enemigos visibles//
 	if (!_visibles) {
-		//si el tiempo transcurrido es mayor al tiempo apagado (0,5)//
+		//si el tiempo transcurrido es mayor al tiempo apagado//
 		if (_clock.getElapsedTime().asSeconds() > tiempoApagado) {
 			//reiniciar reloj//
 			_clock.restart();
 			//VISIBLES es true//
 			_visibles = true;
+			//establecer posicion de ENEMIGOS
 			pos1 = rand() % 5;
 		}
+		//AGREGAR INOCENTE AQUI
 		//posicion1 = a un rand 1 a 5, 6 o 7 para enemigo//
 		//posicion2 = un rand de 1 a 5 o 6 para inocente que no sea igual al primer rand//
 
 	}
+	//si están visibles
 	else {
 		{
+			//si el tiempo transcurrido es mayor al tiempo visible
 			if (_clock.getElapsedTime().asSeconds() > tiempoVisible) {
+				//dejan de estar visibles, disparan y restan una vida y se reinicia el reloj
 				_visibles = false;
 				vidas -= 1;
 				cout << vidas;
@@ -146,13 +156,10 @@ void Juego::spawn() {
 
 
 
-		//LUEGO en DIBUJAR agregar un switch con condicion
-		//si están VISIBLES  - SWITCH (POS) dibujar enemigos[x]
-
-
 	}
 }
 
+//método actualizar para gestionar la posición del cursor y el método spawn
 void Juego::actualizar() {
 
 	Vector2i mousePos = Mouse::getPosition(*ventana1);
@@ -162,21 +169,23 @@ void Juego::actualizar() {
 	
 
 }
-
+//metodo disparar comprobar la colisión y sumar puntos o restar vidas según el caso
 void Juego::disparar() {
 
 	Vector2f playerPos = jugador->ObtenerPosicion();
-	//si,
+	//si están visibles y si el enemigo correspondiente a la posiciones coincide con las coordenadas del click del mouse
 	if (_visibles) {
 		if (enemigos[pos1]->Colision(playerPos.x, playerPos.y)) {
 			cout << "hit";
+			//ELIMINADOS: dejan de estar visible y suman 10 ptos
 			_visibles = false;
 			ptos += 10;
 			cout << ptos;
 		}
 }
 }
-
+//metodo dibujar para la ventana y el enemigo
+//se utiliza un switch para ver qué sprite se debe dibujar según la pos1 y si están visibles
 void Juego::dibujar() {
 
 	ventana1->clear();

@@ -9,7 +9,7 @@ using namespace sf;
 class Enemigos {
 
 private:
-
+	//las tres texturas y sprites necesarios para las distintas posiciones
 	Texture* enemVentanaArriba;
 	Texture* enemVentanaAbajo;
 	Texture* enemPuerta;
@@ -19,13 +19,13 @@ private:
 	Sprite* enemSpritePuerta;
 
 public:
-
+	//constructor
 	Enemigos();
-
+	//un método para obtener cada sprite en la clase Guego
 	Sprite* getSpriteArriba() { return enemSpriteArriba; }
 	Sprite* getSpriteAbajo() { return enemSpriteAbajo; }
 	Sprite* getSpritePuerta() { return enemSpritePuerta; }
 
-	//probar y borrar
+	//un booleano para verificar la colisión
 	bool Colision(float x, float y);
 };

@@ -30,15 +30,18 @@ private:
 	float tiempoApagado;
 	float tiempoVisible;
 
+	//booleando para gestionar la aparicion de enemigos e inocentes
 	bool _visibles;
+	//atributos para las posiciones de las apariciones
 	int pos1;
 	int pos2;
 
-	//variable jugador
+	//jugador
 	Jugador* jugador;
-
+	//enemigo con arreglo para ajustar posiciones
 	Enemigos* enemigos[5];
 
+	//atributos para vidas y puntos
 	int vidas;
 	int ptos;
 

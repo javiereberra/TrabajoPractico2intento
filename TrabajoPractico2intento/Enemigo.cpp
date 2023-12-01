@@ -8,7 +8,7 @@ using namespace std;
 
 Enemigos::Enemigos() {
 
-
+	//establecer texturas y sprites
 	enemVentanaArriba = new Texture;
 	enemVentanaArriba->loadFromFile("assets/ventana_arriba_enemigo.png");
 
@@ -27,7 +27,7 @@ Enemigos::Enemigos() {
 
 	
 }
-
+//para obtener los bounds de cada sprite en la clase Juego
 bool Enemigos::Colision(float x, float y) {
 
 	
