@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 #include "Jugador.h"
 #include "Enemigo.h"
+#include "Inocente.h"
 
 using namespace sf;
 

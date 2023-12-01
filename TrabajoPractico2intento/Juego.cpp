@@ -4,6 +4,7 @@
 #include "Juego.h"
 #include <iostream> 
 #include "Enemigo.h"
+#include "Inocente.h"
 
 
 using namespace sf;
