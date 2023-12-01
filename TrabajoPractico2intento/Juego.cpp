@@ -135,6 +135,12 @@ void Juego::spawn() {
 			_visibles = true;
 			//establecer posicion de ENEMIGOS
 			pos1 = rand() % 5;
+			pos2 = rand() % 5;
+				while (pos2 == pos1) {
+					pos2 = rand() % 5;
+				}
+				cout << pos1 << endl;
+				cout << pos2 << endl;
 		}
 		//AGREGAR INOCENTE AQUI
 		//posicion1 = a un rand 1 a 5, 6 o 7 para enemigo//
@@ -149,7 +155,7 @@ void Juego::spawn() {
 				//dejan de estar visibles, disparan y restan una vida y se reinicia el reloj
 				_visibles = false;
 				vidas -= 1;
-				cout << vidas;
+				//cout << vidas;
 				_clock.restart();
 			}
 		}
