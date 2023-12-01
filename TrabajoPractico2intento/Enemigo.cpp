@@ -28,3 +28,25 @@ Enemigos::Enemigos() {
 	
 }
 
+bool Enemigos::Colision(float x, float y) {
+
+	
+		FloatRect bounds1 = enemSpriteArriba->getGlobalBounds();
+		FloatRect bounds2 = enemSpriteAbajo->getGlobalBounds();
+		FloatRect bounds3 = enemSpritePuerta->getGlobalBounds();
+
+
+		if (bounds1.contains(x, y)) {
+			return true;
+		}
+
+		if (bounds2.contains(x, y)) {
+			return true;
+		}
+
+		if (bounds3.contains(x, y)) {
+			return true;
+		}
+
+	}
+	

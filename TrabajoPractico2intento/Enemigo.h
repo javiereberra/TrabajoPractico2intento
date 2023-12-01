@@ -26,5 +26,6 @@ public:
 	Sprite* getSpriteAbajo() { return enemSpriteAbajo; }
 	Sprite* getSpritePuerta() { return enemSpritePuerta; }
 
-
+	//probar y borrar
+	bool Colision(float x, float y);
 };

@@ -46,10 +46,13 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	enemigos[3]->getSpritePuerta()->setPosition(337.f, 328.f);
 	enemigos[4]->getSpriteAbajo()->setPosition(550.f, 334.f);
 
-	tiempoApagado = 0.5f;
-	tiempoVisible = 1.5f;
+	tiempoApagado = 1.2f;
+	tiempoVisible = 2.0f;
 
 	_visibles = false;
+
+	vidas = 20;
+	ptos = 0;
 
 }
 
@@ -106,7 +109,10 @@ void Juego::procesar_eventos() {
 		case Event::Closed:
 			ventana1->close();
 			break;
-		
+		case Event::MouseButtonPressed:
+			if (evento1.mouseButton.button == Mouse::Button::Left)
+			disparar();
+			break;
 		}
 	}
 }
@@ -132,6 +138,8 @@ void Juego::spawn() {
 		{
 			if (_clock.getElapsedTime().asSeconds() > tiempoVisible) {
 				_visibles = false;
+				vidas -= 1;
+				cout << vidas;
 				_clock.restart();
 			}
 		}
@@ -158,9 +166,15 @@ void Juego::actualizar() {
 void Juego::disparar() {
 
 	Vector2f playerPos = jugador->ObtenerPosicion();
-
-
-
+	//si,
+	if (_visibles) {
+		if (enemigos[pos1]->Colision(playerPos.x, playerPos.y)) {
+			cout << "hit";
+			_visibles = false;
+			ptos += 10;
+			cout << ptos;
+		}
+}
 }
 
 void Juego::dibujar() {

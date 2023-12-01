@@ -39,6 +39,9 @@ private:
 
 	Enemigos* enemigos[5];
 
+	int vidas;
+	int ptos;
+
 
 public:
 	//constructor de juego
