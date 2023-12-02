@@ -63,6 +63,12 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	textura1->loadFromFile("assets/fondo_base_cerrado.jpg");
 	fondo->setTexture(*textura1);
 
+	textura3 = new Texture;
+	fondo_danio = new Sprite;
+	textura3->loadFromFile("assets/fondo_danio_cerrado.jpg");
+	fondo_danio->setTexture(*textura3);
+
+
 	textura2 = new Texture;
 	menuFondo = new Sprite;
 	textura2->loadFromFile("assets/menu.png");
@@ -249,6 +255,8 @@ void Juego::spawn() {
 				_EnemVisibles = false;
 				vidas -= 1;
 				vidasText->setString("VIDAS: " + to_string(vidas));
+				//recibir daño
+				recibirDanio();
 				//cout << vidas;
 				_clock.restart();
 			}
@@ -310,7 +318,7 @@ void Juego::disparar() {
 			cout << "hit";
 			//ELIMINADOS: dejan de estar visible y suman 10 ptos
 			_EnemVisibles = false;
-			ptos += 10;
+			ptos += 1;
 			puntajeText->setString("PUNTAJE: " + to_string(ptos));
 			cout << ptos<<endl;
 		}
@@ -321,8 +329,11 @@ void Juego::disparar() {
 			cout << "hit";
 			//ELIMINADOS: dejan de estar visible y suman 10 ptos
 			_InocVisibles = false;
+			recibirDanio();
 			vidas -= 1;
+			ptos -= 10;
 			vidasText->setString("VIDAS: " + to_string(vidas));
+			puntajeText->setString("PUNTAJE: " + to_string(ptos));
 			cout << vidas<<endl;
 		}
 }
@@ -330,11 +341,22 @@ void Juego::disparar() {
 
 
 
+}
+void Juego::recibirDanio() {
+	
+	ventana1->draw(*fondo_danio);
+	ventana1->display();
 
-
-
+	// tiempo del fondo visble
+	Clock clock;
+	while (clock.getElapsedTime().asSeconds() < 0.3) {
+		
+	}
 
 }
+
+
+
 //metodo dibujar para la ventana y el enemigo
 //se utiliza un switch para ver qué sprite se debe dibujar según la pos1 y si están visibles
 void Juego::dibujar() {

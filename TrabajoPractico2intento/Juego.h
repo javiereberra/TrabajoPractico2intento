@@ -22,6 +22,9 @@ private:
 	Texture* textura2;
 	Sprite* menuFondo;
 
+	Texture* textura3;
+	Sprite* fondo_danio;
+
 	//variables para el menu e interfaz
 	Font* font;
 	Text* menu;
@@ -77,7 +80,7 @@ public:
 	void spawn();
 	
 	//método de gameover para cuando se acaben las vidas
-	
+	void recibirDanio();
 
 
 	//destructor de juego
