@@ -18,21 +18,31 @@ private:
 	//variables para el fondo
 	Texture* textura1;
 	Sprite* fondo;
+	
+	Texture* textura2;
+	Sprite* menuFondo;
 
-	//variables para el menu de inicio
+	//variables para el menu e interfaz
 	Font* font;
 	Text* menu;
+	Text* vidasText;
+	Text* puntajeText;
+	Text* textGameOver;
+	Text* volverMenu;
+	Text* puntajeGameOver;
 
 	//un booleano para determinar cuándo se está jugando y cuándo está en el menu
 	bool start;
 
 	//el reloj para el spawn
 	Clock _clock;
+	Clock _clock2;
 	float tiempoApagado;
 	float tiempoVisible;
 
 	//booleando para gestionar la aparicion de enemigos e inocentes
-	bool _visibles;
+	bool _EnemVisibles;
+	bool _InocVisibles;
 	//atributos para las posiciones de las apariciones
 	int pos1;
 	int pos2;
@@ -41,6 +51,8 @@ private:
 	Jugador* jugador;
 	//enemigo con arreglo para ajustar posiciones
 	Enemigos* enemigos[5];
+	//lo mismo con inocente
+	Inocente* inocentes[5];
 
 	//atributos para vidas y puntos
 	int vidas;
@@ -65,7 +77,7 @@ public:
 	void spawn();
 	
 	//método de gameover para cuando se acaben las vidas
-	void gameOver();
+	
 
 
 	//destructor de juego

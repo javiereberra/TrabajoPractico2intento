@@ -49,3 +49,9 @@ bool Inocente::Colision(float x, float y) {
 	}
 
 }
+//metodo para que no arrastre la posición (0,0) al iniciarlas en el constructor Juego
+void Inocente::setPositions(float x, float y) {
+	inocSpriteArriba->setPosition(x, y);
+	inocSpriteAbajo->setPosition(x, y);
+	inocSpritePuerta->setPosition(x, y);
+}

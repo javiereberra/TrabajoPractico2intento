@@ -28,4 +28,7 @@ public:
 
 	//un booleano para verificar la colisión
 	bool Colision(float x, float y);
+
+	//solucion
+	void setPositions(float x, float y);
 };

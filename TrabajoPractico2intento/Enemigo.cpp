@@ -48,5 +48,10 @@ bool Enemigos::Colision(float x, float y) {
 			return true;
 		}
 
-	}
-	
+}
+	//metodo para que no arrastre la posición (0,0) al iniciarlas en el constructor Juego
+void Enemigos::setPositions(float x, float y) {
+	enemSpriteArriba->setPosition(x, y);
+	enemSpriteAbajo->setPosition(x, y);
+	enemSpritePuerta->setPosition(x, y);
+}
