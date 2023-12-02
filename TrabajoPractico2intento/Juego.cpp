@@ -305,6 +305,17 @@ void Juego::actualizar() {
 	jugador->Movimiento(mousePos.x, mousePos.y);
 	spawn();
 
+	//dificultad
+
+	if (ptos >= 15) {
+
+		tiempoApagado = 1.0f;
+		tiempoVisible = 0.8f;
+	}
+	else {
+		tiempoApagado = 2.0f;
+		tiempoVisible = 1.5f;
+	}
 	
 
 }
