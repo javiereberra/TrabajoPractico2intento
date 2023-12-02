@@ -18,6 +18,8 @@ private:
 	Sprite* enemSpriteAbajo;
 	Sprite* enemSpritePuerta;
 
+	
+
 public:
 	//constructor
 	Enemigos();
@@ -29,6 +31,6 @@ public:
 	//un booleano para verificar la colisión
 	bool Colision(float x, float y);
 
-	//solucion
+	//metodo para que no arrastre la posición (0,0) al iniciarlas en el constructor Juego
 	void setPositions(float x, float y);
 };

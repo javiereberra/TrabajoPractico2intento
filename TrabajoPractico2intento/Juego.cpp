@@ -15,6 +15,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	//Ventana
 	ventana1 = new RenderWindow(VideoMode(ancho, alto), titulo);
 	
+	//inicializar variables vida y puntaje
 	vidas = 3;
 	ptos = 0;
 
@@ -26,7 +27,8 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	menu->setString("PRESIONA 'S' PARA COMENZAR");
 	menu->setCharacterSize(20);
 	menu->setPosition(115, 400);
-
+		
+	//textos puntaje, vidas, Game Over y Puntaje Final
 	puntajeText = new Text;
 	puntajeText->setFont(*font);
 	puntajeText->setCharacterSize(20);
@@ -54,7 +56,6 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	puntajeGameOver = new Text;
 	puntajeGameOver->setFont(*font);
 	puntajeGameOver->setCharacterSize(20);
-	//puntajeGameOver->setString("TU PUNTUACION FUE: " + to_string(ptos));
 	puntajeGameOver->setPosition(170, 400);
 	
 	//Textura y Sprite de fondo
@@ -63,12 +64,13 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	textura1->loadFromFile("assets/fondo_base_cerrado.jpg");
 	fondo->setTexture(*textura1);
 
+	//Textura y Sprite de perder una vida
 	textura3 = new Texture;
 	fondo_danio = new Sprite;
 	textura3->loadFromFile("assets/fondo_danio_cerrado.jpg");
 	fondo_danio->setTexture(*textura3);
 
-
+	//Textura de Menu Wild Gunman
 	textura2 = new Texture;
 	menuFondo = new Sprite;
 	textura2->loadFromFile("assets/menu.png");
@@ -78,6 +80,8 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 
 	//Inicializar el jugador
 	jugador = new Jugador();
+
+	//Inicializar arreglos para Enemigos e Inocentes
 	enemigos[0] = new Enemigos();
 	enemigos[1] = new Enemigos();
 	enemigos[2] = new Enemigos();
@@ -90,19 +94,16 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	inocentes[3] = new Inocente();
 	inocentes[4] = new Inocente();
 
-
 	//para que siempre inicie el menú
 	start = false;
 
 	//establecer las posiciones de los sprites para que coincidan con el fondo
-	
 	enemigos[0]->setPositions(75.f, 84.f);
 	enemigos[1]->setPositions(525.f, 84.f);
 	enemigos[2]->setPositions(50.f, 334.f);
 	enemigos[3]->setPositions(337.f, 328.f);
 	enemigos[4]->setPositions(550.f, 334.f);
-
-	
+		
 	inocentes[0]->setPositions(75.f, 84.f);
 	inocentes[1]->setPositions(525.f, 84.f);
 	inocentes[2]->setPositions(50.f, 334.f);
@@ -117,7 +118,9 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	_EnemVisibles = false;
 	_InocVisibles = false;
 
-	
+	//se le asigna un valor en el constructor a las posiciones sólo por prolijidad
+	pos1 = 0;
+	pos2 = 0;
 }
 
 //Método que gestiona si se está en el menú o jugando.
@@ -128,11 +131,12 @@ void Juego::ejecutar() {
 		while (ventana1->pollEvent(evento)) {
 			if (evento.type == Event::Closed)
 				ventana1->close();
-
+			//Presionar "s" para iniciar el gameloop
 			if (evento.type == Event::KeyPressed) {
 				if (evento.key.code == Keyboard::Key::S && !start) {
 
 					start = true;
+					//los relojes se reinician para que no empiecen a correr cuando uno está en el menu
 					_clock.restart();
 					_clock2.restart();
 				}
@@ -142,12 +146,12 @@ void Juego::ejecutar() {
 		ventana1->clear(Color::Black);
 
 		if (start) {
-
+			//iniciar el loop si start es true
 			gameLoop();
 
 		}
 		else {
-
+			//Menu de fondo si start es false
 			ventana1->draw(*menuFondo);
 			ventana1->draw(*menu);
 		}
@@ -156,6 +160,7 @@ void Juego::ejecutar() {
 	}
 }
 // loop que procesa eventos actualiza y dibuja
+// acá se inicia el juego, gameOver false
 void Juego::gameLoop() {
 
 	bool gameOver = false;
@@ -165,12 +170,13 @@ void Juego::gameLoop() {
 		procesar_eventos();
 		actualizar();
 		dibujar();
-
+		// si las vidas llegan a 0, gameOver true
 		if (vidas <= 0) {
 			gameOver = true;
 
 		}
 	}
+	//Pantalla gameOver con puntuación actualizada
 	while (gameOver && ventana1->isOpen()) {
 		ventana1->clear();
 
@@ -181,6 +187,7 @@ void Juego::gameLoop() {
 
 		ventana1->display();
 
+		//procesar eventos en GameOver para volver a Inicio
 		Event eventoGameOver;
 		while (ventana1->pollEvent(eventoGameOver)) {
 			if (eventoGameOver.type == Event::Closed) {
@@ -201,10 +208,7 @@ void Juego::gameLoop() {
 }
 
 
-
-
-
-//Eventos para poder cerrar ventana y procesar el disparo del jugador
+//Eventos para poder cerrar ventana y procesar el disparo del jugador dentro del loop
 void Juego::procesar_eventos() {
 	Event evento1;
 	while (ventana1->pollEvent(evento1)) {
@@ -229,22 +233,17 @@ void Juego::spawn() {
 		if (_clock.getElapsedTime().asSeconds() > tiempoApagado) {
 			//reiniciar reloj//
 			_clock.restart();
-			//establecer posicion de ENEMIGOS
+			//establecer posicion de ENEMIGOS que no coincida con INOCENTES
 			pos1 = rand() % 5;
 			while (pos1 == pos2) {
 				pos1 = rand() % 5;
 			}
 			//VISIBLES es true//
 			_EnemVisibles = true;
-			//chequear
-			cout << pos1 << endl;
-
+			
 		
 		}
-		//AGREGAR INOCENTE AQUI
-		//posicion1 = a un rand 1 a 5, 6 o 7 para enemigo//
-		//posicion2 = un rand de 1 a 5 o 6 para inocente que no sea igual al primer rand//
-
+		
 	}
 	//si están visibles
 	else {
@@ -255,30 +254,30 @@ void Juego::spawn() {
 				_EnemVisibles = false;
 				vidas -= 1;
 				vidasText->setString("VIDAS: " + to_string(vidas));
-				//recibir daño
+				//metodo de recibir daño
 				recibirDanio();
-				//cout << vidas;
+				//reiniciar el reloj
 				_clock.restart();
 			}
 		}
 	}
 
 
-
+	//cuando no hay inocentes visibles//
 	if (!_InocVisibles) {
 		//si el tiempo transcurrido es mayor al tiempo apagado//
 		if (_clock2.getElapsedTime().asSeconds() > tiempoApagado) {
 			//reiniciar reloj//
 			_clock2.restart();
-
+			//establacer posicion INOCENTES que no coincida ENEMIGOS
 			pos2 = rand() % 5;
 			while (pos2 == pos1) {
 				pos2 = rand() % 5;
 			}
+			//visibles es true
 			_InocVisibles = true;
-			cout << pos2 << endl;
+			
 		}
-
 
 	}
 	else {
@@ -287,14 +286,12 @@ void Juego::spawn() {
 			if (_clock2.getElapsedTime().asSeconds() > tiempoVisible) {
 				//dejan de estar visibles, disparan y restan una vida y se reinicia el reloj
 				_InocVisibles = false;
-				
+				//reinicia el reloj
 				_clock2.restart();
 
 			}
 		}
 	}
-
-
 
 }
 
@@ -303,9 +300,10 @@ void Juego::actualizar() {
 
 	Vector2i mousePos = Mouse::getPosition(*ventana1);
 	jugador->Movimiento(mousePos.x, mousePos.y);
+	//Método para las apariciones de Enemigos e Inocente
 	spawn();
 
-	//dificultad
+	//Condición para aumentar dificultad al llegar a 15 puntos
 
 	if (ptos >= 15) {
 
@@ -326,35 +324,33 @@ void Juego::disparar() {
 	//si están visibles y si el enemigo correspondiente a la posiciones coincide con las coordenadas del click del mouse
 	if (_EnemVisibles) {
 		if (enemigos[pos1]->Colision(playerPos.x, playerPos.y)) {
-			cout << "hit";
-			//ELIMINADOS: dejan de estar visible y suman 10 ptos
+			//ELIMINADOS: dejan de estar visible y suma 1 pto
 			_EnemVisibles = false;
 			ptos += 1;
+			//hay que actualizar el string para que se refleje en pantalla
 			puntajeText->setString("PUNTAJE: " + to_string(ptos));
-			cout << ptos<<endl;
+			
 		}
 }
-
+	//mismo proceso con Inocentes
 	if (_InocVisibles) {
 		if (inocentes[pos2]->Colision(playerPos.x, playerPos.y)) {
-			cout << "hit";
 			//ELIMINADOS: dejan de estar visible y suman 10 ptos
 			_InocVisibles = false;
+			//agregar el mismo efecto por perder una vida al matar inocente
 			recibirDanio();
 			vidas -= 1;
 			ptos -= 10;
 			vidasText->setString("VIDAS: " + to_string(vidas));
 			puntajeText->setString("PUNTAJE: " + to_string(ptos));
-			cout << vidas<<endl;
+			
 		}
 }
 
-
-
-
 }
+//método para agregarle un efecto al perder vidas (recibir daño y matar inocentes)
 void Juego::recibirDanio() {
-	
+	//se dibuja un sprite de fondo 
 	ventana1->draw(*fondo_danio);
 	ventana1->display();
 
@@ -367,7 +363,6 @@ void Juego::recibirDanio() {
 }
 
 
-
 //metodo dibujar para la ventana y el enemigo
 //se utiliza un switch para ver qué sprite se debe dibujar según la pos1 y si están visibles
 void Juego::dibujar() {
@@ -378,6 +373,7 @@ void Juego::dibujar() {
 	ventana1->draw(*puntajeText);
 	ventana1->draw(*vidasText);
 
+	//un switch para determinar qué sprite debe dibujarse según el arreglo y las posiciones
 	if (_EnemVisibles) {
 		switch (pos1) {
 		case 0:
@@ -431,6 +427,7 @@ void Juego::dibujar() {
 
 }
 
+//Destructor de Juego
 Juego::~Juego() {
 	
 	delete inocentes;

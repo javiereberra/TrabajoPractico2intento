@@ -21,7 +21,7 @@ private:
 public:
 	//constructor
 	Inocente();
-	//un método para obtener cada sprite en la clase Guego
+	//un método para obtener cada sprite en la clase Juego
 	Sprite* getSpriteArriba() { return inocSpriteArriba; }
 	Sprite* getSpriteAbajo() { return inocSpriteAbajo; }
 	Sprite* getSpritePuerta() { return inocSpritePuerta; }
@@ -29,6 +29,6 @@ public:
 	//un booleano para verificar la colisión
 	bool Colision(float x, float y);
 
-	//solucion
+	//metodo para que no arrastre la posición (0,0) al iniciarlas en el constructor Juego
 	void setPositions(float x, float y);
 };

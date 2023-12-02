@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 
 	Juego* partida1;
 
-	partida1 = new Juego(800, 600, "Wild Horse");
+	partida1 = new Juego(800, 600, "Wild Gunman");
 	partida1->ejecutar();
 
 	return 0;
